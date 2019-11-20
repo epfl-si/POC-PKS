@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ic-it-web3-svc
+  namespace: ic-it
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: tcp
+  selector:
+    name: ic-it-web3-pod
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ic-it-web3-pod
+  namespace: ic-it
+  labels:
+    name: ic-it-web3-pod
+spec:
+  containers:
+    - name: ic-it-web3
+      image: ic-registry.epfl.ch/tools/php-mysqlclient-apache:latest
+      ports:
+      - containerPort: 80
+      volumeMounts:
+      - mountPath: /var/www/html
+        name: site-data
+        subPath: ic-it-web3
+  volumes:
+  - name: site-data
+    persistentVolumeClaim:
+      claimName: ic-it-scratch

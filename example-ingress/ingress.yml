@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ic-it-web-ingress
+  namespace: ic-it
+spec:
+  tls:
+  - hosts:
+    - ic-it-web1.epfl.ch
+    secretName: star-xaas-ssl
+  - hosts:
+    - ic-it-web2.epfl.ch
+    secretName: star-xaas-ssl
+  - hosts:
+    - ic-it-web3.epfl.ch
+    secretName: star-xaas-ssl
+  rules:
+  - host: ic-it-web1.epfl.ch
+    http:
+      paths:
+      - backend:
+          serviceName: ic-it-web1-svc
+          servicePort: 80
+  - host: ic-it-web2.epfl.ch
+    http:
+      paths:
+      - backend:
+          serviceName: ic-it-web2-svc
+          servicePort: 80
+  - host: ic-it-web3.epfl.ch
+    http:
+      paths:
+      - backend:
+          serviceName: ic-it-web3-svc
+          servicePort: 80
+
